@@ -1,3 +1,5 @@
+- const pages = [{url: '/', title: 'Home'}, {url: '/login', title: 'Login'}, {url: '/register', title: 'Register'}]
+
 header
     .navbar.navbar-expand-lg.navbar-dark.bg-dark
         .container-fluid.container-lg
@@ -6,9 +8,7 @@ header
                 span.navbar-toggler-icon
             #navbarNav.collapse.navbar-collapse
                 ul.navbar-nav.ms-auto
-                    li.nav-item.active
-                        a.nav-link(href='/') Home
-                    li.nav-item
-                        a.nav-link(href='/login') Login
-                    li.nav-item
-                        a.nav-link(href='/register') Register
+                     each page in pages
+                         - let isActive = (locals.url === page.url)
+                         li.nav-item(class=isActive ? 'active' : '')
+                             a.nav-link(href=page.url class=isActive ? 'disabled' : '')=page.title
