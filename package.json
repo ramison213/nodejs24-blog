@@ -4,6 +4,7 @@
   "description": "final course task",
   "main": "main.js",
   "scripts": {
+    "server:dev": "nodemon --inspect ./main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "ramison213",
