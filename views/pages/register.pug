@@ -1,4 +1,15 @@
 extends ../layout
 block content
-    .container-fluid.container-lg
-        h2 Register
+    .container-fluid.container-lg.pt-5
+        .row.justify-content-center
+            .col-12.col-sm-8.col-md-6.col-lg-4
+                .card.p-4
+                    h1.mb-4.text-center Sign Up
+                    form(action="/register" method="POST")
+                        .mb-3
+                            label.form-label(for="username") Username
+                            input.form-control(type="text" id="username" name="username" required)
+                        .mb-4
+                            label.form-label(for="password") Password
+                            input.form-control(type="password" id="password" name="password" required)
+                        button.btn.btn-primary.w-100.mb-2(type="submit") Sign Up
