@@ -11,14 +11,17 @@ pagesRouter.get('/', (req, resp) => {
 })
 
 // My posts page
-
+pagesRouter.get('/my-posts', (req, resp) => {
+    resp.render('./pages/my-posts', {
+        url: req.url
+    });
+})
 
 
 // Login (sign-in) page
 pagesRouter.get('/login', (req, resp) => {
     resp.render('./pages/login', {
         url: req.url
-
     });
 })
 
@@ -26,7 +29,6 @@ pagesRouter.get('/login', (req, resp) => {
 pagesRouter.get('/register', (req, resp) => {
     resp.render('./pages/register', {
         url: req.url
-
     });
 })
 
