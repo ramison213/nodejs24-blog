@@ -4,8 +4,7 @@
   "description": "final course task",
   "main": "main.js",
   "scripts": {
-    "server:dev": "nodemon --inspect ./main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server:dev": "nodemon --inspect ./main.js"
   },
   "author": "ramison213",
   "license": "ISC",
@@ -14,9 +13,12 @@
   },
   "dependencies": {
     "@prisma/client": "^5.15.0",
+    "bcrypt": "^5.1.1",
     "config": "^3.3.11",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "morgan": "^1.10.0",
     "prisma": "^5.15.0",
     "pug": "^3.0.3",
