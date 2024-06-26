@@ -32,6 +32,12 @@ pagesRouter.get('/register', (req, resp) => {
     });
 })
 
+// Auth - logout
+pagesRouter.get('/logout', (req, resp) => {
+    // TODO change logout func
+    resp.redirect('/');
+});
+
 module.exports = {
     pagesRouter
 }
