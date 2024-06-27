@@ -17,7 +17,6 @@ pagesRouter.get('/my-posts', (req, resp) => {
     });
 })
 
-
 // Login (sign-in) page
 pagesRouter.get('/login', (req, resp) => {
     resp.render('./pages/login', {
