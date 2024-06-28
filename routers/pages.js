@@ -1,35 +1,40 @@
 const { Router } = require('express');
+const { createUserAccount } = require("../controllers/authController");
 const pagesRouter = new Router();
-// const userService = require('../services/user_service');
+const express = require('express');
+
+const formDataParser = express.urlencoded({ extended: false });
+
+pagesRouter.use((req, res, next) => {
+    res.locals.url = req.url;
+    next();
+});
 
 // Home page
 pagesRouter.get('/', (req, resp) => {
     // const userList = userService.getUserList();
-    resp.render('./pages/index', {
-        url: req.url
-    });
+    resp.render('./pages/index');
 })
 
 // My posts page
 pagesRouter.get('/my-posts', (req, resp) => {
-    resp.render('./pages/my-posts', {
-        url: req.url
-    });
+    resp.render('./pages/my-posts');
 })
 
 // Login (sign-in) page
 pagesRouter.get('/login', (req, resp) => {
-    resp.render('./pages/login', {
-        url: req.url
-    });
+    resp.render('./pages/login');
 })
 
-// Register (sign-up) page
-pagesRouter.get('/register', (req, resp) => {
-    resp.render('./pages/register', {
-        url: req.url
-    });
-})
+// Sign-up page
+pagesRouter.route('/signup')
+    .get((req, resp) => {
+        resp.render('./pages/signup');
+    })
+    .post(
+        formDataParser,
+        createUserAccount
+    )
 
 // Auth - logout
 pagesRouter.get('/logout', (req, resp) => {
