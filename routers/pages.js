@@ -1,9 +1,32 @@
-const { Router } = require('express');
-const { createUserAccount } = require("../controllers/authController");
-const pagesRouter = new Router();
 const express = require('express');
+const { Router } = require('express');
+const { createUserAccount } = require('../controllers/authController');
+const pagesController = require('../controllers/pagesController');
+const pagesRouter = new Router();
+const { userValidator } = require('../middlewares/validators');
+const { AuthError, ValidationError } = require('../errors');
+const logger = require('../utils/logger')('pages router');
 
 const formDataParser = express.urlencoded({ extended: false });
+
+async function formErrorHandler(err, req, resp, next) {
+    logger.error(err.message, err);
+
+    if (err instanceof ValidationError || err instanceof AuthError) {
+        req.__pageContext = {
+            ...req.__pageContext,
+            data: req.body,
+            errors: err.errors
+        }
+
+        delete req.__pageContext.data.password;
+        logger.info('Saved metadata in context:', req.__pageContext);
+
+        return next();
+    }
+
+    next(err);
+}
 
 pagesRouter.use((req, res, next) => {
     res.locals.url = req.url;
@@ -11,36 +34,33 @@ pagesRouter.use((req, res, next) => {
 });
 
 // Home page
-pagesRouter.get('/', (req, resp) => {
-    // const userList = userService.getUserList();
-    resp.render('./pages/index');
-})
+pagesRouter.get('/',
+    pagesController.renderPage('./pages/index')
+)
 
 // My posts page
-pagesRouter.get('/my-posts', (req, resp) => {
-    resp.render('./pages/my-posts');
-})
+pagesRouter.get('/my-posts',
+    pagesController.renderPage('./pages/my-posts')
+)
 
 // Login (sign-in) page
-pagesRouter.get('/login', (req, resp) => {
-    resp.render('./pages/login');
-})
+pagesRouter.get('/login',
+    pagesController.renderPage('./pages/login')
+)
 
 // Sign-up page
 pagesRouter.route('/signup')
-    .get((req, resp) => {
-        resp.render('./pages/signup');
-    })
+    .get(pagesController.renderPage('./pages/signup'))
     .post(
         formDataParser,
-        createUserAccount
+        userValidator,
+        createUserAccount,
+        formErrorHandler,
+        pagesController.renderPage('./pages/signup')
     )
 
 // Auth - logout
-pagesRouter.get('/logout', (req, resp) => {
-    // TODO change logout func
-    resp.redirect('/');
-});
+pagesRouter.get('/logout', () => {});
 
 module.exports = {
     pagesRouter
