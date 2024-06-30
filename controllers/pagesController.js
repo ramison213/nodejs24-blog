@@ -1,4 +1,5 @@
-const logger = require('../utils/logger')('pages controller');
+const path = require('path');
+const logger = require('../utils/logger')(path.basename(__filename));
 
 /**
  * @param {import('express').Request} req

@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const { ROLES } = require('../middlewares/authContext');
-const logger = require('../utils/logger')('auth controller');
+const path = require('path');
+const logger = require('../utils/logger')(path.basename(__filename));
 const { AuthError } = require('../errors');
 
 const MESSAGES = {
