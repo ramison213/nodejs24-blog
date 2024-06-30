@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const logger = require('./utils/logger')(path.basename(__filename));
 const { pagesRouter } = require('./routers/pages');
+const { sessionMiddleware } = require('./session');
 const mongoose = require('mongoose');
 
 const app = express();
@@ -21,10 +22,12 @@ mongoose.connect(dataSource, { useNewUrlParser: true, useUnifiedTopology: true }
     .then(() => logger.info('MongoDB connected'))
     .catch(err => {
         logger.error('Failed to connect to MongoDB', err);
+        process.exit(1);
     });
 
+app.use(sessionMiddleware);
 app.use('/', pagesRouter);
 
 app.listen(port, () => {
-    logger.info('Server is now listening on port', port);
+    logger.info(`Server is now listening on port ${port}`);
 })
