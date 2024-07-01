@@ -1,3 +1,4 @@
+const { session: sessionConfig } = require('config');
 const path = require('path');
 const logger = require('../utils/logger')(path.basename(__filename));
 
@@ -24,7 +25,33 @@ function authInitSessionAndRedirect(redirectTo) {
     };
 }
 
+function authDestroySessionAndRedirect(req, resp) {
+    if (!req.session.context) {
+        logger.warn('No session context found');
+        resp.clearCookie(sessionConfig.cookieName);
+
+        return resp.redirect(req.baseUrl || '/');
+    }
+
+    const { role, username } = req.session.context;
+
+    req.session.destroy((err) => {
+        if (err) {
+            logger.error(`Error destroying session for [${role}] [${username}]`, err);
+            resp.clearCookie(sessionConfig.cookieName);
+
+            return resp.redirect(req.baseUrl || '/');
+        }
+
+        logger.info(`Session for [${role}] [${username}] terminated`);
+        resp.clearCookie(sessionConfig.cookieName);
+
+        resp.redirect(req.baseUrl || '/');
+    });
+}
+
 module.exports = {
     ROLES,
-    authInitSessionAndRedirect
+    authInitSessionAndRedirect,
+    authDestroySessionAndRedirect
 }

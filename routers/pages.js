@@ -5,7 +5,7 @@ const pagesController = require('../controllers/pagesController');
 const pagesRouter = new Router();
 const { userValidator } = require('../middlewares/validators');
 const { AuthError, ValidationError } = require('../errors');
-const { authInitSessionAndRedirect } = require('../middlewares/authContext');
+const { authInitSessionAndRedirect, authDestroySessionAndRedirect } = require('../middlewares/authContext');
 const path = require('path');
 const logger = require('../utils/logger')(path.basename(__filename));
 
@@ -63,7 +63,7 @@ pagesRouter.route('/signup')
     )
 
 // Auth - logout
-pagesRouter.get('/logout', () => {});
+pagesRouter.get('/logout', authDestroySessionAndRedirect);
 
 module.exports = {
     pagesRouter
