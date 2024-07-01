@@ -7,6 +7,19 @@ const logger = require('../utils/logger')(path.basename(__filename));
  * @param {import('express').NextFunction} next
  */
 
+function addPageContext(req, resp, next) {
+    const isLoggedIn = !!req.session?.context?.role;
+    req.__pageContext = {
+        isLoggedIn,
+        role: req.session?.context?.role,
+        currentUrl: req.url
+    };
+
+    const userMark = isLoggedIn ? `${req.__pageContext.role} ${req.session.context.username}`: 'unauthorized';
+    logger.info(`page access from [${userMark}]`);
+
+    next();
+}
 
 /**
  * @param {string} templateName
@@ -19,5 +32,6 @@ function renderPage(templateName) {
 }
 
 module.exports = {
+    addPageContext,
     renderPage
 }

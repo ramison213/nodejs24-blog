@@ -30,10 +30,7 @@ async function formErrorHandler(err, req, resp, next) {
     next(err);
 }
 
-pagesRouter.use((req, res, next) => {
-    res.locals.url = req.url;
-    next();
-});
+pagesRouter.use(pagesController.addPageContext);
 
 // Home page
 pagesRouter.get('/',
