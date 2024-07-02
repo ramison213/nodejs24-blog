@@ -1,6 +1,6 @@
 const express = require('express');
 const { Router } = require('express');
-const { createUserAccount } = require('../controllers/authController');
+const { createUserAccount, logUserIn } = require('../controllers/authController');
 const pagesController = require('../controllers/pagesController');
 const pagesRouter = new Router();
 const { userValidator } = require('../middlewares/validators');
@@ -43,9 +43,16 @@ pagesRouter.get('/my-posts',
 )
 
 // Login (sign-in) page
-pagesRouter.get('/login',
-    pagesController.renderPage('./pages/login')
-)
+pagesRouter.route('/login')
+    .get(pagesController.renderPage('./pages/login'))
+    .post(
+        formDataParser,
+        userValidator,
+        logUserIn,
+        authInitSessionAndRedirect(),
+        formErrorHandler,
+        pagesController.renderPage('./pages/login')
+    )
 
 // Sign-up page
 pagesRouter.route('/signup')

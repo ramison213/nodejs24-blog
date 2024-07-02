@@ -1,13 +1,59 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/User');
 const { ROLES } = require('../middlewares/authContext');
 const path = require('path');
 const logger = require('../utils/logger')(path.basename(__filename));
 const { AuthError } = require('../errors');
+const { findByUserName, saveNewUser } = require('../services/user_service');
 
 const MESSAGES = {
     TAKEN: 'Cannot use this username',
-    AUTH_UNKNOWN_ERROR: 'Unknown auth error'
+    AUTH_UNKNOWN_ERROR: 'Unknown auth error',
+    INVALID_CREDENTIALS: 'Invalid creds!',
+    DB_ERROR: 'Database error',
+}
+
+async function logUserIn(req, resp, next) {
+    const { username, password } = req.body;
+    let user;
+
+    try {
+        user = await findByUserName(username);
+    } catch (err) {
+        if (err.name === 'MongoServerError') {
+            return next(new AuthError({
+                msg: MESSAGES.DB_ERROR,
+                errors: { auth: MESSAGES.DB_ERROR }
+            }));
+        }
+
+        next(new AuthError({
+            msg: MESSAGES.AUTH_UNKNOWN_ERROR,
+            errors: { auth: MESSAGES.AUTH_UNKNOWN_ERROR }
+        }));
+    }
+
+    if (!user) {
+        return next(new AuthError({
+            msg: `user [${username}] - invalid creds`,
+            errors: { auth: MESSAGES.INVALID_CREDENTIALS }
+        }));
+    }
+
+    const isPasswordOk = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordOk) {
+        return next(new AuthError({
+            msg: `user [${username}] - invalid creds`,
+            errors: { auth: MESSAGES.INVALID_CREDENTIALS }
+        }));
+    }
+
+    const role = user.role || ROLES.user;
+    req.__authContext = { username, role };
+
+    logger.info(`user [${username}] with role [${role}] - successfully logged in`);
+
+    next();
 }
 
 async function createUserAccount(req, resp, next) {
@@ -17,8 +63,7 @@ async function createUserAccount(req, resp, next) {
         const hashedPass = await bcrypt.hash(password, salt);
         const role = ROLES.user;
 
-        const newUser = new User({ username, password: hashedPass, role });
-        await newUser.save();
+        const newUser = await saveNewUser({ username, hashedPass, role });
 
         req.__authContext = { username, role };
         logger.info(`User [${newUser.username}] with role [${newUser.role}] successfully created`);
@@ -40,5 +85,6 @@ async function createUserAccount(req, resp, next) {
 }
 
 module.exports = {
+    logUserIn,
     createUserAccount
 }
