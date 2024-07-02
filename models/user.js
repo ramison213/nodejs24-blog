@@ -6,4 +6,6 @@ const userSchema = new Schema({
     role: { type: String, enum: ['user', 'admin'] }
 }, { timestamps: true });
 
-module.exports = model('User', userSchema);
+const User = model('User', userSchema);
+
+module.exports = User;
