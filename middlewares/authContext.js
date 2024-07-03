@@ -50,8 +50,27 @@ function authDestroySessionAndRedirect(req, resp) {
     });
 }
 
+/**
+ * @param {ROLES[]} availableForRoles
+ */
+
+function restrictedResource(availableForRoles = []) {
+    return (req, resp, next) => {
+        const role = req.session?.context?.role || 'unauthorised';
+
+        if (availableForRoles.includes(role)) {
+            return next();
+        }
+
+        // if no session - redirect back to home
+        logger.info(`Resource is unavailable for [${role}]!`);
+        resp.redirect(`${req.baseUrl}/login`);
+    };
+}
+
 module.exports = {
     ROLES,
     authInitSessionAndRedirect,
-    authDestroySessionAndRedirect
+    authDestroySessionAndRedirect,
+    restrictedResource
 }

@@ -5,7 +5,7 @@ const pagesController = require('../controllers/pagesController');
 const pagesRouter = new Router();
 const { userValidator } = require('../middlewares/validators');
 const { AuthError, ValidationError } = require('../errors');
-const { authInitSessionAndRedirect, authDestroySessionAndRedirect } = require('../middlewares/authContext');
+const { authInitSessionAndRedirect, authDestroySessionAndRedirect, restrictedResource, ROLES } = require('../middlewares/authContext');
 const path = require('path');
 const logger = require('../utils/logger')(path.basename(__filename));
 
@@ -40,6 +40,7 @@ pagesRouter.get('/',
 // My posts page
 pagesRouter.route('/my-posts')
     .get(
+        restrictedResource(ROLES.user),
         pagesController.renderPage('./pages/my-posts')
     )
 
