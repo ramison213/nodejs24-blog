@@ -40,13 +40,13 @@ function authDestroySessionAndRedirect(req, resp) {
             logger.error(`Error destroying session for [${role}] [${username}]`, err);
             resp.clearCookie(sessionConfig.cookieName);
 
-            return resp.redirect(req.baseUrl || '/');
+            return resp.redirect(`${req.baseUrl}/`);
         }
 
         logger.info(`Session for [${role}] [${username}] terminated`);
         resp.clearCookie(sessionConfig.cookieName);
 
-        resp.redirect(req.baseUrl || '/');
+        resp.redirect(`${req.baseUrl}/`);
     });
 }
 

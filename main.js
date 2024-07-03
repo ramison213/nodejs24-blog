@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(accessLogger);
 app.use(express.static(path.join(__dirname, 'static')));
 
-mongoose.connect(dataSource, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(dataSource)
     .then(() => logger.info('MongoDB connected'))
     .catch(err => {
         logger.error('Failed to connect to MongoDB', err);

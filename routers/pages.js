@@ -38,9 +38,10 @@ pagesRouter.get('/',
 )
 
 // My posts page
-pagesRouter.get('/my-posts',
-    pagesController.renderPage('./pages/my-posts')
-)
+pagesRouter.route('/my-posts')
+    .get(
+        pagesController.renderPage('./pages/my-posts')
+    )
 
 // Login (sign-in) page
 pagesRouter.route('/login')

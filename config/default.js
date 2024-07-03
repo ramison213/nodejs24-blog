@@ -14,6 +14,7 @@ module.exports = {
     session: {
         secureCookie: isProd,
         cookieName: 'sid',
-        secret: process.env.SESSION_SECRET
+        secret: process.env.SESSION_SECRET,
+        maxAge: isProd ? process.env.COOKIE_MAX_AGE : null,
     }
 }
