@@ -7,4 +7,6 @@ const postSchema = new Schema({
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 }, { timestamps: true });
 
-module.exports = model('Post', postSchema);
+const Post = model('Post', postSchema);
+
+module.exports = Post;
