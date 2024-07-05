@@ -1,0 +1,9 @@
+mixin postComponent(author, title, content, date)
+    li.card
+        .card-header.d-flex.flex-column
+            .author= author
+            .date= date
+        .card-body
+            h5.card-title= title
+            p.card-text= content
+
