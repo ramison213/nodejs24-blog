@@ -4,7 +4,7 @@ const userSchema = new Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: ['user', 'admin'] }
-}, { timestamps: true });
+}, { timestamps: { createdAt: true, updatedAt: false } });
 
 const User = model('User', userSchema);
 
