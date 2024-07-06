@@ -3,7 +3,7 @@ const { ROLES } = require('../middlewares/authContext');
 const path = require('path');
 const logger = require('../utils/logger')(path.basename(__filename));
 const { AuthError } = require('../errors');
-const { findByUserName, saveNewUser } = require('../services/user_service');
+const { getUserByUsername, saveNewUser } = require('../services/user_service');
 
 const MESSAGES = {
     TAKEN: 'Cannot use this username',
@@ -14,10 +14,11 @@ const MESSAGES = {
 
 async function logUserIn(req, resp, next) {
     const { username, password } = req.body;
+
     let user;
 
     try {
-        user = await findByUserName(username);
+        user = await getUserByUsername(username);
     } catch (err) {
         if (err.name === 'MongoServerError') {
             return next(new AuthError({

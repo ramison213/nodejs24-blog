@@ -17,7 +17,7 @@ async function createPost(req, resp, next) {
     const username = req.session.context.username;
 
     try {
-        const author = await findByUserName(username);
+        const author = await getUserByUsername(username);
         const newPost = await saveNewPost({ title: postTitle, content: postContent, author: author._id });
 
         logger.info(`new post [${newPost.title}] successfully created by [${newPost.author}]`);

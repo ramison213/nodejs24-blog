@@ -5,7 +5,7 @@ const User = require('../models/user');
  * @returns {Promise<object | null>}
  */
 
-function findByUserName(username) {
+function getUserByUsername(username) {
     return User.findOne({ username }, 'password', { lean: true });
 }
 
@@ -19,10 +19,11 @@ function findByUserName(username) {
 async function saveNewUser({ username, hashedPass, role }) {
     const newUser = new User({ username, password: hashedPass, role });
     await newUser.save();
+
     return newUser;
 }
 
 module.exports = {
-    findByUserName,
+    getUserByUsername,
     saveNewUser
 };
