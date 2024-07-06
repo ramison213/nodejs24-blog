@@ -1,6 +1,6 @@
 const path = require('path');
-const { findByUserName } = require('../services/user_service');
-const { saveNewPost, getAllPosts } = require('../services/post_service');
+const { getUserByUsername } = require('../services/user_service');
+const { saveNewPost } = require('../services/post_service');
 const logger = require('../utils/logger')(path.basename(__filename));
 
 const withAsyncHandler = (fn) => async (req, resp, next) => {

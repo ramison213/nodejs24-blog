@@ -41,6 +41,20 @@ async function getAllPosts() {
 }
 
 /**
+ * @param {string} userId
+ * @returns {Promise<Post[]>}
+ */
+async function getUserPosts(userId) {
+    return Post
+        .find({ author: userId })
+        .populate('author', 'username')
+        .populate('comments')
+        .sort({ createdAt: -1 })
+        .lean();
+}
+
+
+/**
  * Formats the date
  * @param {Post[]} posts
  * @returns {Post[]} formatted posts
@@ -70,18 +84,20 @@ async function saveNewPost({ title, content, author }) {
  * @param {String} postId
  * @returns {Promise<Object>}
  */
-async function deletePostById(postId) {
-    const post = await Post.findByIdAndDelete(postId);
-    if (post) {
-        await Comment.deleteMany({ post: postId });
-    }
-
-    return post;
-}
+// async function deletePostById(postId) {
+//     const post = await Post.findByIdAndDelete(postId);
+//
+//     if (post) {
+//         await Comment.deleteMany({ post: postId });
+//     }
+//
+//     return post;
+// }
 
 module.exports = {
     getAllPosts,
     saveNewPost,
-    deletePostById,
-    formatPostDates
+    // deletePostById,
+    formatPostDates,
+    getUserPosts
 };
