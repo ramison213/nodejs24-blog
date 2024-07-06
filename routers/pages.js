@@ -7,6 +7,9 @@ const { userValidator } = require('../middlewares/user_validator');
 const { AuthError, ValidationError } = require('../errors');
 const { authInitSessionAndRedirect, authDestroySessionAndRedirect, restrictedResource, ROLES } = require('../middlewares/authContext');
 const path = require('path');
+const { createPost } = require('../controllers/postController');
+const { postValidator } = require('../middlewares/post_validator');
+const { fetchAllPosts } = require('../controllers/pagesController');
 const logger = require('../utils/logger')(path.basename(__filename));
 
 const formDataParser = express.urlencoded({ extended: false });
@@ -33,14 +36,25 @@ async function formErrorHandler(err, req, resp, next) {
 pagesRouter.use(pagesController.addPageContext);
 
 // Home page
-pagesRouter.get('/',
-    pagesController.renderPage('./pages/index')
-)
+pagesRouter.route('/')
+    .get(
+        fetchAllPosts,
+        pagesController.renderPage('./pages/index')
+    )
 
 // My posts page
 pagesRouter.route('/my-posts')
     .get(
         restrictedResource(ROLES.user),
+        pagesController.renderPage('./pages/my-posts')
+    )
+    .post(
+        restrictedResource(ROLES.user),
+        formDataParser,
+        postValidator,
+        createPost,
+        fetchAllPosts,
+        formErrorHandler,
         pagesController.renderPage('./pages/my-posts')
     )
 
