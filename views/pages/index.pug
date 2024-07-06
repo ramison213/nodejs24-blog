@@ -1,26 +1,16 @@
 extends ../layout
 
+include ../mixins/post
+
 block content
     div.slogan.py-4.bg-secondary.shadow.text-white.text-center
         .container-fluid.container-lg
             h2 Welcome to My App
             p This is the best place to share your posts.
-            //section.users
-            //    ul.user__list
-            //        each user in locals.userList
-            //            li.card
-            //                h3.card__title #{user.name}
-            //                p.card__row
-            //                    b.card__row-title Email:
-            //                    span #{user.email}
-            //                p.card__row
-            //                    b.card__row-title Phone:
-            //                    span #{user.phone}
-            //                p.card__row
-            //                    b.card__row-title Company:
-            //                    span #{user.company}
-            //                p.card__row
-            //                    b.card__row-title Job Title:
-            //                    span #{user.jobTitle}
-            //                p.card__actions
-            //                    button.card__btn Delete
+
+    .container-fluid.container-lg
+        section.my-4.px-0
+            ul.list-group.d-flex.flex-column.row-gap-3
+                if postsList
+                    each post in postsList
+                        +postComponent(post.author.username, post.title, post.content, post.createdAt)
