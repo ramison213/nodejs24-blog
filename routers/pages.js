@@ -1,15 +1,13 @@
 const express = require('express');
 const { Router } = require('express');
-const { createUserAccount, logUserIn } = require('../controllers/authController');
-const pagesController = require('../controllers/pagesController');
 const pagesRouter = new Router();
-const { userValidator } = require('../middlewares/user_validator');
+const authController = require('../controllers/auth_controller');
+const pagesController = require('../controllers/pages_controller');
 const { AuthError, ValidationError } = require('../errors');
 const { authInitSessionAndRedirect, authDestroySessionAndRedirect, restrictedResource, ROLES } = require('../middlewares/authContext');
-const path = require('path');
-const { createPost } = require('../controllers/postController');
+const { userValidator } = require('../middlewares/user_validator');
 const { postValidator } = require('../middlewares/post_validator');
-const { fetchAllPosts } = require('../controllers/pagesController');
+const path = require('path');
 const logger = require('../utils/logger')(path.basename(__filename));
 
 const formDataParser = express.urlencoded({ extended: false });
@@ -38,7 +36,7 @@ pagesRouter.use(pagesController.addPageContext);
 // Home page
 pagesRouter.route('/')
     .get(
-        fetchAllPosts,
+        pagesController.fetchAllPosts,
         pagesController.renderPage('./pages/index')
     )
 
@@ -46,14 +44,15 @@ pagesRouter.route('/')
 pagesRouter.route('/my-posts')
     .get(
         restrictedResource(ROLES.user),
+        pagesController.fetchUserPosts,
         pagesController.renderPage('./pages/my-posts')
     )
     .post(
         restrictedResource(ROLES.user),
         formDataParser,
         postValidator,
-        createPost,
-        fetchAllPosts,
+        pagesController.createPost,
+        pagesController.fetchUserPosts,
         formErrorHandler,
         pagesController.renderPage('./pages/my-posts')
     )
@@ -64,7 +63,7 @@ pagesRouter.route('/login')
     .post(
         formDataParser,
         userValidator,
-        logUserIn,
+        authController.logUserIn,
         authInitSessionAndRedirect(),
         formErrorHandler,
         pagesController.renderPage('./pages/login')
@@ -76,7 +75,7 @@ pagesRouter.route('/signup')
     .post(
         formDataParser,
         userValidator,
-        createUserAccount,
+        authController.createUserAccount,
         authInitSessionAndRedirect(),
         formErrorHandler,
         pagesController.renderPage('./pages/signup')

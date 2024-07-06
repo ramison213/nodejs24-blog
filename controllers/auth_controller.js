@@ -1,9 +1,9 @@
-const bcrypt = require('bcrypt');
-const { ROLES } = require('../middlewares/authContext');
 const path = require('path');
 const logger = require('../utils/logger')(path.basename(__filename));
+const bcrypt = require('bcrypt');
+const { ROLES } = require('../middlewares/authContext');
 const { AuthError } = require('../errors');
-const { getUserByUsername, saveNewUser } = require('../services/user_service');
+const userService = require('../services/user_service');
 
 const MESSAGES = {
     TAKEN: 'Cannot use this username',
@@ -14,11 +14,10 @@ const MESSAGES = {
 
 async function logUserIn(req, resp, next) {
     const { username, password } = req.body;
-
     let user;
 
     try {
-        user = await getUserByUsername(username);
+        user = await userService.getUserByUsername(username);
     } catch (err) {
         if (err.name === 'MongoServerError') {
             return next(new AuthError({
@@ -64,7 +63,7 @@ async function createUserAccount(req, resp, next) {
         const hashedPass = await bcrypt.hash(password, salt);
         const role = ROLES.user;
 
-        const newUser = await saveNewUser({ username, hashedPass, role });
+        const newUser = await userService.saveNewUser({ username, hashedPass, role });
 
         req.__authContext = { username, role };
         logger.info(`User [${newUser.username}] with role [${newUser.role}] successfully created`);

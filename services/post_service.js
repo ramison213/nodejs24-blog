@@ -55,7 +55,6 @@ async function getUserPosts(userId) {
 
 
 /**
- * Formats the date
  * @param {Post[]} posts
  * @returns {Post[]} formatted posts
  */

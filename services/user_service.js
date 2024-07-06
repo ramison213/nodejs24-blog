@@ -1,11 +1,19 @@
 const User = require('../models/user');
 
 /**
- * @param {string} username
- * @returns {Promise<object | null>}
+ * @typedef {object} UserObject
+ * @property {string} username
+ * @property {string} password
+ * @property {string} role
+ * @property {string} _id
+ * @property {Date} createdAt
  */
 
-function getUserByUsername(username) {
+/**
+ * @param {string} username
+ * @returns {Promise<UserObject | null>}
+ */
+async function getUserByUsername(username) {
     return User.findOne({ username }, 'password', { lean: true });
 }
 
@@ -13,7 +21,7 @@ function getUserByUsername(username) {
  * @param {string} username
  * @param {string} hashedPass
  * @param {string} role
- * @returns {Promise<object>}
+ * @returns {Promise<UserObject | null>}
  */
 
 async function saveNewUser({ username, hashedPass, role }) {
