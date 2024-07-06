@@ -1,5 +1,45 @@
 extends ../layout
 
+include ../mixins/post
+
 block content
     .container-fluid.container-lg
-        h2.text-center.py-5 My Posts
+        div.d-flex.justify-content-between.my-5
+            h2 My Posts
+            button.btn.btn-primary(type="button" data-bs-toggle="modal" data-bs-target="#newPostModal") + Add post
+
+        section.my-4.px-0
+            ul.list-group.d-flex.flex-column.row-gap-3
+                if userPostsList
+                    each post in userPostsList
+                        +postComponent(post.author.username, post.title, post.content, post.createdAt)
+
+    div.modal.fade(id="newPostModal" tabindex="-1" aria-labelledby="newPostModalLabel" aria-hidden="true")
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    h1.modal-title.fs-5(id="newPostModalLabel") New Post
+                    button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+                form.modal-body(action="/my-posts" method="POST")
+                    div.mb-3
+                        label.form-label(for="postTitleField") Post title
+                        input.form-control(type="text" id="postTitleField" name="postTitle" class=(errors && errors.postTitle ? 'is-invalid' : '') required autofocus)
+                        if errors && errors.postTitle
+                            #usernameError.invalid-feedback= errors.postTitle[0]
+                    div.mb-3
+                        label.form-label(for="postContentField") Content
+                        textarea.form-control(id="postContentField" rows="4" name="postContent" class=(errors && errors.postContent ? 'is-invalid' : '') required)
+                        if errors && errors.postContent
+                            #usernameError.invalid-feedback= errors.postContent[0]
+                    div.d-flex.justify-content-end
+                        button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Close
+                        button.btn.btn-primary.ms-2(type="submit") Save
+    block scripts
+        script.
+            document.addEventListener('DOMContentLoaded', () => {
+                window.errors = !{JSON.stringify(errors)};
+                if (window.errors.postTitle || window.errors.postContent) {
+                    const myModal = new bootstrap.Modal(document.getElementById('newPostModal'));
+                    myModal.show();
+                }
+            });
