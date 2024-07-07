@@ -12,7 +12,7 @@ block content
             ul.list-group.d-flex.flex-column.row-gap-3
                 if userPostsList
                     each post in userPostsList
-                        +postComponent(post.author.username, post.title, post.content, post.createdAt)
+                        +postComponent(post.author.username, post.title, post.content, post.createdAt, post._id)
 
     div.modal.fade(id="newPostModal" tabindex="-1" aria-labelledby="newPostModalLabel" aria-hidden="true")
         div.modal-dialog
