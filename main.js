@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { server: srvConfig, data: dataConfig } = require('config');
+const methodOverride = require('method-override');
 const morgan = require('morgan');
 const express = require('express');
 const path = require('path');
@@ -17,6 +18,7 @@ app.set('view engine', 'pug');
 app.use(express.json());
 app.use(accessLogger);
 app.use(express.static(path.join(__dirname, 'static')));
+app.use(methodOverride('_method'));
 
 mongoose.connect(dataSource)
     .then(() => logger.info('MongoDB connected'))
