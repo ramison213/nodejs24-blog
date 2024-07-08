@@ -42,19 +42,20 @@ pagesRouter.route('/')
 
 // My posts page
 pagesRouter.route('/my-posts')
+    .all(
+        restrictedResource(ROLES.user)
+    )
     .get(
-        restrictedResource(ROLES.user),
         pagesController.fetchUserPosts,
         pagesController.renderPage('./pages/my-posts')
     )
     .post(
-        restrictedResource(ROLES.user),
         formDataParser,
         postValidator,
         pagesController.createPost,
         formErrorHandler,
         pagesController.fetchUserPosts,
-        pagesController.renderPage('./pages/my-posts')
+        pagesController.handlePostCreation
     )
 
 // Login (sign-in) page

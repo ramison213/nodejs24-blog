@@ -69,10 +69,30 @@ function renderPage(templateName) {
     }
 }
 
+/**
+ * @param {string} url
+ * @returns {Function}
+ */
+function redirectTo(url) {
+    return (req, resp) => {
+        resp.redirect(`${url}`);
+    };
+}
+
+async function handlePostCreation(req, resp, next) {
+    if (req.__pageContext.errors) {
+        renderPage('./pages/my-posts')(req, resp, next);
+    } else {
+        redirectTo('/my-posts')(req, resp, next);
+    }
+}
+
 module.exports = {
     addPageContext,
     createPost,
     fetchAllPosts,
     fetchUserPosts,
-    renderPage
+    renderPage,
+    redirectTo,
+    handlePostCreation
 }
