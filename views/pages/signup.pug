@@ -9,12 +9,25 @@ block content
                     form(action="/signup" method="POST")
                         .mb-3
                             label.form-label(for="username") Username
-                            input.form-control(type="text" id="username" name="username" required value=(data && data.username) class=(errors && errors.username ? 'is-invalid' : ''))
+                            input.form-control(
+                                type="text"
+                                id="username"
+                                name="username"
+                                required
+                                value=(data && data.username)
+                                class=(errors && errors.username ? 'is-invalid' : '')
+                            )
                             if errors && errors.username
                                 #usernameError.invalid-feedback= errors.username[0]
                         .mb-4
                             label.form-label(for="password") Password
-                            input.form-control(type="password" id="password" name="password" required class=(errors && errors.password ? 'is-invalid' : ''))
+                            input.form-control(
+                                type="password"
+                                id="password"
+                                name="password"
+                                required
+                                class=(errors && errors.password ? 'is-invalid' : '')
+                            )
                             if errors && errors.password
                                 #passError.invalid-feedback= errors.password[0]
                         button.btn.btn-primary.w-100.mb-2(type="submit") Sign Up

@@ -9,12 +9,25 @@ block content
                     form(action="/login" method="POST")
                         .mb-3
                             label.form-label(for="username") Username
-                            input.form-control(type="text" id="username" name="username" value=(data && data.auth) required class=(errors && errors.auth ? 'is-invalid' : ''))
+                            input.form-control(
+                                type="text"
+                                id="username"
+                                name="username"
+                                value=(data && data.auth)
+                                required
+                                class=(errors && errors.auth ? 'is-invalid' : '')
+                            )
                             if errors && errors.auth
                                 .invalid-feedback= errors.auth
                         .mb-4
                             label.form-label(for="password") Password
-                            input.form-control(type="password" id="password" name="password" required class=(errors ? 'is-invalid' : ''))
+                            input.form-control(
+                                type="password"
+                                id="password"
+                                name="password"
+                                required
+                                class=(errors ? 'is-invalid' : '')
+                            )
                             if errors && errors.password
                                 .invalid-feedback= errors.password[0]
                             if errors && errors.auth

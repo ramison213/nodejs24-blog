@@ -23,12 +23,25 @@ block content
                 form.modal-body(action="/my-posts" method="POST")
                     div.mb-3
                         label.form-label(for="postTitleField") Post title
-                        input.form-control(type="text" id="postTitleField" name="postTitle" class=(errors && errors.postTitle ? 'is-invalid' : '') required autofocus)
+                        input.form-control(
+                            type="text"
+                            id="postTitleField"
+                            name="postTitle"
+                            class=(errors && errors.postTitle ? 'is-invalid' : '')
+                            value=(data && data.postTitle)
+                            required
+                        )
                         if errors && errors.postTitle
                             #usernameError.invalid-feedback= errors.postTitle[0]
                     div.mb-3
                         label.form-label(for="postContentField") Content
-                        textarea.form-control(id="postContentField" rows="4" name="postContent" class=(errors && errors.postContent ? 'is-invalid' : '') required)
+                        textarea.form-control(
+                            id="postContentField"
+                            rows="4"
+                            name="postContent"
+                            class=(errors && errors.postContent ? 'is-invalid' : '')
+                            required
+                        ) #{(data && data.postContent)}
                         if errors && errors.postContent
                             #usernameError.invalid-feedback= errors.postContent[0]
                     div.d-flex.justify-content-end
