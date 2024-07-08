@@ -41,7 +41,7 @@ block content
                             name="postContent"
                             class=(errors && errors.postContent ? 'is-invalid' : '')
                             required
-                        ) #{(data && data.postContent)}
+                        ) #{data && data.postContent}
                         if errors && errors.postContent
                             #usernameError.invalid-feedback= errors.postContent[0]
                     div.d-flex.justify-content-end

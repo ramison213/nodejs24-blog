@@ -13,7 +13,7 @@ const logger = require('../utils/logger')(path.basename(__filename));
 const formDataParser = express.urlencoded({ extended: false });
 
 async function formErrorHandler(err, req, resp, next) {
-    logger.error(err.message, err);
+    logger.error('ERROR', err.message, err);
 
     if (err instanceof ValidationError || err instanceof AuthError) {
         req.__pageContext = {
@@ -52,8 +52,8 @@ pagesRouter.route('/my-posts')
         formDataParser,
         postValidator,
         pagesController.createPost,
-        pagesController.fetchUserPosts,
         formErrorHandler,
+        pagesController.fetchUserPosts,
         pagesController.renderPage('./pages/my-posts')
     )
 
