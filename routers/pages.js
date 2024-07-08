@@ -4,7 +4,7 @@ const pagesRouter = new Router();
 const authController = require('../controllers/auth_controller');
 const pagesController = require('../controllers/pages_controller');
 const { AuthError, ValidationError } = require('../errors');
-const { authInitSessionAndRedirect, authDestroySessionAndRedirect, restrictedResource, ROLES } = require('../middlewares/authContext');
+const authContext = require('../middlewares/auth_context');
 const { userValidator } = require('../middlewares/user_validator');
 const { postValidator } = require('../middlewares/post_validator');
 const path = require('path');
@@ -43,7 +43,7 @@ pagesRouter.route('/')
 // My posts page
 pagesRouter.route('/my-posts')
     .all(
-        restrictedResource(ROLES.user)
+        authContext.restrictedResource(authContext.ROLES.user)
     )
     .get(
         pagesController.fetchUserPosts,
@@ -65,7 +65,7 @@ pagesRouter.route('/login')
         formDataParser,
         userValidator,
         authController.logUserIn,
-        authInitSessionAndRedirect(),
+        authContext.authInitSessionAndRedirect(),
         formErrorHandler,
         pagesController.renderPage('./pages/login')
     )
@@ -77,13 +77,13 @@ pagesRouter.route('/signup')
         formDataParser,
         userValidator,
         authController.createUserAccount,
-        authInitSessionAndRedirect(),
+        authContext.authInitSessionAndRedirect(),
         formErrorHandler,
         pagesController.renderPage('./pages/signup')
     )
 
 // Auth - logout
-pagesRouter.get('/logout', authDestroySessionAndRedirect);
+pagesRouter.get('/logout', authContext.authDestroySessionAndRedirect);
 
 module.exports = {
     pagesRouter

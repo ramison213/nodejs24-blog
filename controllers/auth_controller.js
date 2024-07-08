@@ -1,7 +1,7 @@
 const path = require('path');
 const logger = require('../utils/logger')(path.basename(__filename));
 const bcrypt = require('bcrypt');
-const { ROLES } = require('../middlewares/authContext');
+const authContext = require('../middlewares/auth_context');
 const { AuthError } = require('../errors');
 const userService = require('../services/user_service');
 
@@ -48,7 +48,7 @@ async function logUserIn(req, resp, next) {
         }));
     }
 
-    const role = user.role || ROLES.user;
+    const role = user.role || authContext.ROLES.user;
     req.__authContext = { username, role };
 
     logger.info(`user [${username}] with role [${role}] - successfully logged in`);
@@ -61,7 +61,7 @@ async function createUserAccount(req, resp, next) {
         const { username, password } = req.body;
         const salt = await bcrypt.genSalt(7);
         const hashedPass = await bcrypt.hash(password, salt);
-        const role = ROLES.user;
+        const role = authContext.ROLES.user;
 
         const newUser = await userService.saveNewUser({ username, hashedPass, role });
 
