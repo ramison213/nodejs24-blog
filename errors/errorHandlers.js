@@ -26,6 +26,16 @@ async function formErrorHandler(err, req, resp, next) {
     next(err);
 }
 
+const withAsyncHandler = (fn) => async (req, resp, next) => {
+    try {
+        await fn(req, resp, next);
+    } catch (err) {
+        logger.error(err);
+        next(err);
+    }
+}
+
 module.exports = {
-    formErrorHandler
+    formErrorHandler,
+    withAsyncHandler
 }
