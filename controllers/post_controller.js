@@ -30,7 +30,6 @@ async function fetchAllPosts(req, resp, next) {
 }
 
 async function fetchUserPosts(req, resp, next) {
-    logger.info('req.session', req.session);
     const user = await userService.getUserByUsername(req.session.context.username);
     const postsList = await postService.getUserPosts(user._id);
 

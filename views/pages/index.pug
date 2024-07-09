@@ -13,4 +13,4 @@ block content
             ul.list-group.d-flex.flex-column.row-gap-3
                 if postsList
                     each post in postsList
-                        +postComponent(post.author.username, post.title, post.content, post.createdAt, post._id)
+                        +postComponent(post)

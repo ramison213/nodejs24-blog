@@ -1,11 +1,30 @@
-mixin postComponent(author, title, content, date, postId)
+mixin postComponent(post)
     li.card
         .card-header.d-flex.flex-column
-            .author.mb-2= author
-            .date= date
-            if (currentUrl === '/my-posts')
-                form.d-flex(action=`/posts/${postId}?_method=DELETE` method="POST")
-                    button.btn.btn-secondary.btn-sm.ms-auto(type="submit") Delete
+            .author.mb-2= post.author.username
+            .date= post.createdAt
+
+            .d-flex.justify-content-end
+                if (isLoggedIn && currentUrl === '/my-posts')
+                    form.ms-2(action=`/posts/${post._id}?_method=DELETE` method="POST")
+                        button.btn.btn-secondary.btn-sm(type="submit") Delete
         .card-body
-            h5.card-title= title
-            p.card-text= content
+            h5.card-title= post.title
+            p.card-text= post.content
+        .card-footer.text-body-secondary
+            if isLoggedIn
+                .d-flex.justify-content-end
+                    form.d-flex(action=`/comments/${post._id}` method="POST")
+                        input.form-control.ms-auto(
+                            type="text"
+                            id="commentField"
+                            name="commentContent"
+                            required
+                        )
+                        button.btn.btn-primary.btn-sm.ms-2(type="submit") Comment
+
+            if post.comments.length
+                h6.card-subtitle.mt-1= 'Comments'
+                each comment in post.comments
+                    ul
+                        li #{comment.content}
