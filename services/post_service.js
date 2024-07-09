@@ -14,7 +14,6 @@ const moment = require('moment');
  * @property {string} content
  * @property {Author} author
  * @property {string} createdAt
- * @property {string} updatedAt
  */
 
 /**
@@ -24,7 +23,6 @@ const moment = require('moment');
  * @property {string} content
  * @property {Author} author
  * @property {string} createdAt
- * @property {string} updatedAt
  * @property {Comment[]} comments
  */
 

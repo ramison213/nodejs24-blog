@@ -3,6 +3,7 @@ const { Router } = require('express');
 const pagesRouter = new Router();
 const authController = require('../controllers/auth_controller');
 const pagesController = require('../controllers/pages_controller');
+const postController = require('../controllers/post_controller');
 const authContext = require('../middlewares/auth_context');
 const { userValidator } = require('../middlewares/user_validator');
 const { postValidator } = require('../middlewares/post_validator');
@@ -15,7 +16,7 @@ pagesRouter.use(pagesController.addPageContext);
 // Home page
 pagesRouter.route('/')
     .get(
-        pagesController.fetchAllPosts,
+        postController.fetchAllPosts,
         pagesController.renderPage('./pages/index')
     )
 
@@ -25,15 +26,15 @@ pagesRouter.route('/my-posts')
         authContext.restrictedResource(authContext.ROLES.user)
     )
     .get(
-        pagesController.fetchUserPosts,
+        postController.fetchUserPosts,
         pagesController.renderPage('./pages/my-posts')
     )
     .post(
         formDataParser,
         postValidator,
-        pagesController.createPost,
+        postController.createPost,
         formErrorHandler,
-        pagesController.fetchUserPosts,
+        postController.fetchUserPosts,
         pagesController.handlePostCreation
     )
 

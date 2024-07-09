@@ -23,44 +23,6 @@ function addPageContext(req, _resp, next) {
 }
 
 /**
- * @param {import('express').Request & { session: { context: { username: string, role: string } } }} req
- * @param {import('express').Response} _resp
- * @param {import('express').NextFunction} next
- */
-async function createPost(req, _resp, next) {
-    const { postTitle, postContent } = req.body;
-    const username = req.session.context.username;
-
-    try {
-        const author = await userService.getUserByUsername(username);
-        const newPost = await postService.saveNewPost({ title: postTitle, content: postContent, author: author._id });
-
-        logger.info(`new post [${newPost.title}] successfully created by [${newPost.author}]`);
-
-        next();
-    } catch (err) {
-        next(err);
-    }
-}
-
-async function fetchAllPosts(req, _resp, next) {
-    const postsList = await postService.getAllPosts();
-
-    req.__pageContext.postsList = postService.formatPostDates(postsList);
-
-    next();
-}
-
-async function fetchUserPosts(req, _resp, next) {
-    const user = await userService.getUserByUsername(req.session.context.username);
-    const postsList = await postService.getUserPosts(user._id);
-
-    req.__pageContext.userPostsList = postService.formatPostDates(postsList);
-
-    next();
-}
-
-/**
  * @param {string} templateName
  */
 function renderPage(templateName) {
@@ -89,9 +51,6 @@ async function handlePostCreation(req, resp, next) {
 
 module.exports = {
     addPageContext,
-    createPost,
-    fetchAllPosts,
-    fetchUserPosts,
     renderPage,
     redirectTo,
     handlePostCreation
