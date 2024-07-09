@@ -3,33 +3,12 @@ const { Router } = require('express');
 const pagesRouter = new Router();
 const authController = require('../controllers/auth_controller');
 const pagesController = require('../controllers/pages_controller');
-const { AuthError, ValidationError } = require('../errors');
 const authContext = require('../middlewares/auth_context');
 const { userValidator } = require('../middlewares/user_validator');
 const { postValidator } = require('../middlewares/post_validator');
-const path = require('path');
-const logger = require('../utils/logger')(path.basename(__filename));
+const { formErrorHandler } = require('../errors/errorHandlers');
 
 const formDataParser = express.urlencoded({ extended: false });
-
-async function formErrorHandler(err, req, resp, next) {
-    logger.error('ERROR', err.message, err);
-
-    if (err instanceof ValidationError || err instanceof AuthError) {
-        req.__pageContext = {
-            ...req.__pageContext,
-            data: req.body,
-            errors: err.errors
-        }
-
-        delete req.__pageContext.data.password;
-        logger.info('Saved metadata in context:', req.__pageContext);
-
-        return next();
-    }
-
-    next(err);
-}
 
 pagesRouter.use(pagesController.addPageContext);
 
