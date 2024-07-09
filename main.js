@@ -7,6 +7,7 @@ const path = require('path');
 const logger = require('./utils/logger')(path.basename(__filename));
 const { pagesRouter } = require('./routers/pages');
 const { postRouter } = require('./routers/post');
+const { commentRouter } = require('./routers/comment');
 const { sessionMiddleware } = require('./session');
 const mongoose = require('mongoose');
 
@@ -31,6 +32,7 @@ mongoose.connect(dataSource)
 app.use(sessionMiddleware);
 app.use('/', pagesRouter);
 app.use('/posts', postRouter);
+app.use('/comments', commentRouter);
 
 app.listen(port, () => {
     logger.info(`Server is now listening on port ${port}`);
