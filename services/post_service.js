@@ -83,20 +83,20 @@ async function saveNewPost({ title, content, author }) {
  * @param {String} postId
  * @returns {Promise<Object>}
  */
-// async function deletePostById(postId) {
-//     const post = await Post.findByIdAndDelete(postId);
-//
-//     if (post) {
-//         await Comment.deleteMany({ post: postId });
-//     }
-//
-//     return post;
-// }
+async function deletePostById(postId) {
+    const post = await Post.findByIdAndDelete(postId);
+
+    if (post) {
+        await Comment.deleteMany({ post: postId });
+    }
+
+    return post;
+}
 
 module.exports = {
     getAllPosts,
     saveNewPost,
-    // deletePostById,
+    deletePostById,
     formatPostDates,
     getUserPosts
 };

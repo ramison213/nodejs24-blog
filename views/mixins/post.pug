@@ -3,6 +3,9 @@ mixin postComponent(author, title, content, date, postId)
         .card-header.d-flex.flex-column
             .author.mb-2= author
             .date= date
+            if (currentUrl === '/my-posts')
+                form.d-flex(action=`/posts/${postId}?_method=DELETE` method="POST")
+                    button.btn.btn-secondary.btn-sm.ms-auto(type="submit") Delete
         .card-body
             h5.card-title= title
             p.card-text= content
