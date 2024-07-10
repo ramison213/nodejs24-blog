@@ -23,6 +23,7 @@ process.on('beforeExit', () => {
 const writeToErrorStream = (moduleName, ...args) => {
     errorWritableStream.write(`${new Date().toISOString()} ${moduleName}: ${args.join(' ')}\n`);
 };
+
 const writeToInfoStream = (moduleName, ...args) => {
     return infoWritableStream.write(`${new Date().toISOString()} ${moduleName}: ${args.join(' ')}\n`);
 };
