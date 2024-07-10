@@ -10,6 +10,7 @@ const { postRouter } = require('./routers/post');
 const { commentRouter } = require('./routers/comment');
 const { sessionMiddleware } = require('./session');
 const mongoose = require('mongoose');
+const { globalErrorHandler } = require('./errors/errorHandlers');
 
 const app = express();
 const port = srvConfig.port;
@@ -33,6 +34,7 @@ app.use(sessionMiddleware);
 app.use('/', pagesRouter);
 app.use('/posts', postRouter);
 app.use('/comments', commentRouter);
+app.use(globalErrorHandler);
 
 app.listen(port, () => {
     logger.info(`Server is now listening on port ${port}`);
