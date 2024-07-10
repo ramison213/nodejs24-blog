@@ -17,6 +17,7 @@ block content
                                 value=(data && data.username)
                                 class=(errors && errors.username ? 'is-invalid' : '')
                             )
+
                             if errors && errors.username
                                 #usernameError.invalid-feedback= errors.username[0]
                         .mb-4
@@ -28,8 +29,10 @@ block content
                                 required
                                 class=(errors && errors.password ? 'is-invalid' : '')
                             )
+
                             if errors && errors.password
                                 #passError.invalid-feedback= errors.password[0]
+
                         button.btn.btn-primary.w-100.mb-2(type="submit") Sign Up
                     p.text-center If you already have an account,&nbsp;
                         a(href="/login") Sign in

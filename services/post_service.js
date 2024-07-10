@@ -38,7 +38,8 @@ async function getAllPosts() {
             populate: {
                 path: 'author',
                 select: 'username'
-            }
+            },
+            options: { sort: { createdAt: -1 } }
         })
         .sort({ createdAt: -1 })
         .lean();
@@ -57,7 +58,8 @@ async function getUserPosts(userId) {
             populate: {
                 path: 'author',
                 select: 'username'
-            }
+            },
+            options: { sort: { createdAt: -1 } }
         })
         .sort({ createdAt: -1 })
         .lean();

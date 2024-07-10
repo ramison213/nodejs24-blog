@@ -17,6 +17,7 @@ block content
                                 required
                                 class=(errors && errors.auth ? 'is-invalid' : '')
                             )
+
                             if errors && errors.auth
                                 .invalid-feedback= errors.auth
                         .mb-4
@@ -28,8 +29,10 @@ block content
                                 required
                                 class=(errors ? 'is-invalid' : '')
                             )
+
                             if errors && errors.password
                                 .invalid-feedback= errors.password[0]
+
                             if errors && errors.auth
                                 .invalid-feedback= errors.auth
                         button.btn.btn-primary.w-100.mb-2(type="submit") Sign In
