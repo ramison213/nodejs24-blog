@@ -9,7 +9,7 @@ postRouter.delete(
     '/:postId',
     authContext.restrictedResource(authContext.ROLES.user),
     postController.deletePost,
-    pagesController.redirectTo('/my-posts')
+    pagesController.redirectToPrevPage()
 );
 
 module.exports = {

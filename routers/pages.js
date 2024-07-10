@@ -35,7 +35,7 @@ pagesRouter.route('/my-posts')
         postController.createPost,
         formErrorHandler,
         postController.fetchUserPosts,
-        pagesController.handlePostCreation
+        pagesController.redirectToPrevPage()
     )
 
 // Login (sign-in) page

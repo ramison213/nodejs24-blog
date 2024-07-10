@@ -1,7 +1,5 @@
 const path = require('path');
 const logger = require('../utils/logger')(path.basename(__filename));
-const postService = require('../services/post_service');
-const userService = require('../services/user_service');
 
 /**
  * @param {import('express').Request & { session: { context: { username: string, role: string } } }} req
@@ -31,27 +29,15 @@ function renderPage(templateName) {
     }
 }
 
-/**
- * @param {string} url
- * @returns {Function}
- */
-function redirectTo(url) {
-    return (req, resp) => {
-        resp.redirect(`${url}`);
+function redirectToPrevPage() {
+    return (req, res) => {
+        const previousPage = req.get('Referer') || '/';
+        res.redirect(previousPage);
     };
-}
-
-async function handlePostCreation(req, resp, next) {
-    if (req.__pageContext.errors) {
-        renderPage('./pages/my-posts')(req, resp, next);
-    } else {
-        redirectTo('/my-posts')(req, resp, next);
-    }
 }
 
 module.exports = {
     addPageContext,
     renderPage,
-    redirectTo,
-    handlePostCreation
+    redirectToPrevPage
 }
