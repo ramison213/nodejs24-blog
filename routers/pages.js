@@ -65,6 +65,8 @@ pagesRouter.route('/signup')
 // Auth - logout
 pagesRouter.get('/logout', authContext.authDestroySessionAndRedirect);
 
+pagesRouter.use(pagesController.renderPage('./errors/404'));
+
 module.exports = {
     pagesRouter
 }
