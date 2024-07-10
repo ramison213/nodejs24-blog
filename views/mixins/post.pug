@@ -11,8 +11,8 @@ mixin postComponent(post)
         .card-body
             h5.card-title= post.title
             p.card-text= post.content
-        .card-footer.text-body-secondary
-            if isLoggedIn
+        if isLoggedIn
+            .card-footer.text-body-secondary
                 .d-flex.justify-content-end
                     form.d-flex(action=`/comments/${post._id}` method="POST")
                         input.form-control.ms-auto(
@@ -23,10 +23,10 @@ mixin postComponent(post)
                         )
                         button.btn.btn-primary.btn-sm.ms-2(type="submit") Comment
 
-            if post.comments.length
-                h6.card-subtitle.mt-1= 'Comments'
-                ul
-                    each comment in post.comments
-                        li.card.mt-1
-                            .card-header #{comment.author.username}
-                            .card-body.p-1.ps-4 #{comment.content}
+                if post.comments.length
+                    h6.card-subtitle.mt-1= 'Comments'
+                    ul
+                        each comment in post.comments
+                            li.card.mt-1
+                                .card-header #{comment.author.username}
+                                .card-body.p-1.ps-4 #{comment.content}
