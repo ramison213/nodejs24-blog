@@ -5,7 +5,7 @@ const MongoStorage = require('connect-mongo');
 
 const cookieParams = {
     httpOnly: true,
-    sameSite: 'none',
+    sameSite: 'strict',
     secure: sessionConfig.secureCookie,
     maxAge: sessionConfig.maxAge,
 }

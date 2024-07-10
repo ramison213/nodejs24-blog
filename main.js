@@ -17,6 +17,8 @@ const port = srvConfig.port;
 const dataSource = dataConfig.envDataSource;
 const accessLogger = morgan(':date[iso] :method :url :status');
 
+app.set('trust proxy', 1);
+
 app.set('view engine', 'pug');
 app.use(express.json());
 app.use(accessLogger);
