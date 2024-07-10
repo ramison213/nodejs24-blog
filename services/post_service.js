@@ -33,7 +33,13 @@ async function getAllPosts() {
     return Post
         .find()
         .populate('author', 'username')
-        .populate('comments')
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'author',
+                select: 'username'
+            }
+        })
         .sort({ createdAt: -1 })
         .lean();
 }
@@ -46,7 +52,13 @@ async function getUserPosts(userId) {
     return Post
         .find({ author: userId })
         .populate('author', 'username')
-        .populate('comments')
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'author',
+                select: 'username'
+            }
+        })
         .sort({ createdAt: -1 })
         .lean();
 }

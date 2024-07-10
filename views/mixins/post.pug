@@ -25,6 +25,8 @@ mixin postComponent(post)
 
             if post.comments.length
                 h6.card-subtitle.mt-1= 'Comments'
-                each comment in post.comments
-                    ul
-                        li #{comment.content}
+                ul
+                    each comment in post.comments
+                        li.card.mt-1
+                            .card-header #{comment.author.username}
+                            .card-body.p-1.ps-4 #{comment.content}
