@@ -1,5 +1,5 @@
 const { AuthError, ValidationError } = require('./index');
-const logger = require('../utils/logger')('form_handler');
+const logger = require('../utils/logger')('error_handler');
 
 /**
  * @param {Error} err
