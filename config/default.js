@@ -1,4 +1,5 @@
 const isProd = process.env.NODE_ENV === 'production';
+const defaultMaxAge = 24 * 60 * 60 * 1000;
 
 module.exports = {
     logger: {
@@ -15,6 +16,6 @@ module.exports = {
         secureCookie: isProd,
         cookieName: 'sid',
         secret: process.env.SESSION_SECRET,
-        maxAge: isProd ? process.env.COOKIE_MAX_AGE : null,
+        maxAge: isProd ? process.env.COOKIE_MAX_AGE : defaultMaxAge,
     }
 }
