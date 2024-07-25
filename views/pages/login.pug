@@ -13,13 +13,14 @@ block content
                                 type="text"
                                 id="username"
                                 name="username"
-                                value=(data && data.auth)
+                                value=(data && data.username)
                                 required
                                 class=(errors && errors.auth ? 'is-invalid' : '')
                             )
 
                             if errors && errors.auth
                                 .invalid-feedback= errors.auth
+
                         .mb-4
                             label.form-label(for="password") Password
                             input.form-control(
@@ -36,5 +37,6 @@ block content
                             if errors && errors.auth
                                 .invalid-feedback= errors.auth
                         button.btn.btn-primary.w-100.mb-2(type="submit") Sign In
+
                     p.text-center If you don't have an account yet,&nbsp;
                         a(href="/signup") Sign up
