@@ -6,6 +6,7 @@ block content
             .col-12.col-sm-8.col-md-6.col-lg-4
                 .card.p-4
                     h1.mb-4.text-center Sign Up
+
                     form(action="/signup" method="POST")
                         .mb-3
                             label.form-label(for="username") Username
@@ -20,6 +21,7 @@ block content
 
                             if errors && errors.username
                                 #usernameError.invalid-feedback= errors.username[0]
+
                         .mb-4
                             label.form-label(for="password") Password
                             input.form-control(
@@ -34,5 +36,6 @@ block content
                                 #passError.invalid-feedback= errors.password[0]
 
                         button.btn.btn-primary.w-100.mb-2(type="submit") Sign Up
+
                     p.text-center If you already have an account,&nbsp;
                         a(href="/login") Sign in
