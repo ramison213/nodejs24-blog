@@ -1,16 +1,17 @@
 mixin postComponent(post)
     li.card
-        .card-header.d-flex.flex-column
-            .author.mb-2= post.author.username
-            .date= post.createdAt
+        .card-header.d-flex
+            .d-flex.flex-column.row-gap-1
+                .author #{ post.author.username }
+                .date #{ post.createdAt }
 
-            .d-flex.justify-content-end
-                if (isLoggedIn && currentUrl === '/my-posts')
-                    form.ms-2(action=`/posts/${post._id}?_method=DELETE` method="POST")
-                        button.btn.btn-secondary.btn-sm(type="submit") Delete
-        .card-body
-            h5.card-title= post.title
-            p.card-text= post.content
+            if (isLoggedIn && currentUrl === '/my-posts')
+                form.ms-auto(action=`/posts/${post._id}?_method=DELETE` method="POST")
+                    button.btn-close(type="submit" aria-label="Close")
+        .card-body.py-1
+            h5.card-title.mb-1 #{ post.title }
+            p.card-text #{ post.content }
+
         if isLoggedIn
             .card-footer.text-body-secondary
                 .d-flex.justify-content-end
@@ -21,12 +22,14 @@ mixin postComponent(post)
                             name="commentContent"
                             required
                         )
-                        button.btn.btn-primary.btn-sm.ms-2(type="submit") Comment
+
+                        button.btn.btn-primary.ms-2(type="submit") Comment
 
                 if post.comments.length
-                    h6.card-subtitle.mt-1= 'Comments'
+                    h6.card-subtitle.mt-1 Comments
+
                     ul
                         each comment in post.comments
                             li.card.mt-1
-                                .card-header #{comment.author.username}
-                                .card-body.p-1.ps-4 #{comment.content}
+                                .card-header #{ comment.author.username }
+                                .card-body.p-1.ps-4 #{ comment.content }
