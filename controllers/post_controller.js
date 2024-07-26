@@ -1,20 +1,21 @@
-const userService = require('../services/user_service');
 const postService = require('../services/post_service');
 const path = require('path');
 const { withAsyncHandler } = require('../errors/errorHandlers');
 const logger = require('../utils/logger')(path.basename(__filename));
 
 /**
- * @param {import('express').Request & { session: { context: { username: string, role: string } } }} req
+ * @param {import('express').Request & { session: { context: { username: string, role: string, userId: string } } }} req
  * @param {import('express').Response} resp
  * @param {import('express').NextFunction} next
  */
 async function createPost(req, resp, next) {
     const { postTitle, postContent } = req.body;
-    const username = req.session.context.username;
 
-    const author = await userService.getUserByUsername(username);
-    const newPost = await postService.saveNewPost({ title: postTitle, content: postContent, author: author._id });
+    const newPost = await postService.saveNewPost({
+        title: postTitle,
+        content: postContent,
+        author: req.session.context.userId
+    });
 
     logger.info(`new post [${newPost.title}] successfully created by [${newPost.author}]`);
 
@@ -30,8 +31,7 @@ async function fetchAllPosts(req, resp, next) {
 }
 
 async function fetchUserPosts(req, resp, next) {
-    const user = await userService.getUserByUsername(req.session.context.username);
-    const postsList = await postService.getUserPosts(user._id);
+    const postsList = await postService.getUserPosts(req.session.context.userId);
 
     req.__pageContext.userPostsList = postService.formatPostDates(postsList);
 
