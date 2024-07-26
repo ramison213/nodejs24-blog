@@ -13,7 +13,7 @@ async function formErrorHandler(err, req, resp, next) {
     if (err instanceof ValidationError || err instanceof AuthError) {
         req.__pageContext = {
             ...req.__pageContext,
-            data: req.body,
+            data: { ...req.body },
             errors: err.errors
         }
 

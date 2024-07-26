@@ -49,7 +49,7 @@ async function logUserIn(req, resp, next) {
     }
 
     const role = user.role || authContext.ROLES.user;
-    req.__authContext = { username, role };
+    req.__authContext = { username, role, userId: user._id };
 
     logger.info(`user [${username}] with role [${role}] - successfully logged in`);
 
