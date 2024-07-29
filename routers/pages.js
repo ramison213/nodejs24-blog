@@ -8,8 +8,6 @@ const authContext = require('../middlewares/auth_context');
 const { userValidator } = require('../middlewares/user_validator');
 const { postValidator } = require('../middlewares/post_validator');
 const { formErrorHandler } = require('../errors/errorHandlers');
-const path = require('path');
-const logger = require('../utils/logger')(path.basename(__filename));
 
 const formDataParser = express.urlencoded({ extended: false });
 

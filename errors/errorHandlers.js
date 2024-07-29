@@ -35,13 +35,20 @@ const withAsyncHandler = (fn) => async (req, resp, next) => {
     }
 }
 
-function globalErrorHandler(err, req, res, next) {
+function globalErrorHandler(err, req, resp, _next) {
     logger.error('Unexpected server error', err);
-    res.status(500).render('./errors/500');
+    resp.status(500).render('./errors/500');
+}
+
+function notFoundHandler(msg) {
+    return (req, resp, _next) => {
+        resp.status(404).render('errors/404', { message: msg });
+    }
 }
 
 module.exports = {
     formErrorHandler,
     withAsyncHandler,
-    globalErrorHandler
+    globalErrorHandler,
+    notFoundHandler
 }
