@@ -15,7 +15,6 @@ const ROLES = {
  *      resp: import('express').Response
  * ): void)|*}
  */
-
 function authInitSessionAndRedirect(redirectTo) {
     return (req, resp) => {
         logger.info(`Creating session for [${req.__authContext.role}] [${req.__authContext.username}]`);
@@ -53,7 +52,6 @@ function authDestroySessionAndRedirect(req, resp) {
 /**
  * @param {ROLES[]} availableForRoles
  */
-
 function restrictedResource(availableForRoles = []) {
     return (req, resp, next) => {
         const role = req.session?.context?.role || 'unauthorised';
