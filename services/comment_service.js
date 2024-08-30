@@ -1,5 +1,6 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post');
+const { NotFoundError } = require("../errors");
 
 /**
  * @property {string} content
@@ -8,18 +9,20 @@ const Post = require('../models/post');
  * @returns {Promise<Object>}
  */
 async function saveNewComment({ content, authorId, postId }) {
-    const newComment = new Comment({ content, author: authorId, post: postId });
-    await newComment.save();
-
     const post = await Post.findById(postId);
 
     if (post) {
+        const newComment = new Comment({ content, author: authorId, post: postId });
+        await newComment.save();
         post.comments.push(newComment);
         await post.save();
-    }
 
-    return newComment;
+        return newComment;
+    } else {
+        throw new NotFoundError({ msg: 'Post not found' });
+    }
 }
+
 
 module.exports = {
     saveNewComment
