@@ -60,7 +60,7 @@ function restrictedResource(availableForRoles = []) {
             return next();
         }
 
-        // if no session - redirect back to home
+        // if no session - redirect back to login page
         logger.info(`Resource is unavailable for [${role}]!`);
         resp.redirect(`${req.baseUrl}/login`);
     };
